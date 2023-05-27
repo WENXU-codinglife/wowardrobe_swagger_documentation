@@ -1,0 +1,1197 @@
+openapi: 3.0.3
+info:
+  title: WoWardrobe REST API
+  description: |-
+    *[Note: WardrobePro is a personal project developed using Python3, python-flask, postgreSQL, Python-SQLAlchemy, Python-Smorest, Python-Marshmallow, and Python-JWT.]*
+
+    Are you tired of rummaging through your closet, unsure of what to wear each day? Look no further! WardrobePro is here to revolutionize the way you manage your fashion collection.
+
+    WardrobePro is a powerful and user-friendly API server that serves as your very own virtual clothes library. With its sleek interface and cutting-edge features, it allows you to effortlessly organize, track, and plan your outfits with ease.
+
+    - [The WoWardrobe repository](https://github.com/WENXU-codinglife/wowardrobe_PROJ)
+  contact:
+    email: wxxq84@gmail.com
+  version: 0.0.1
+externalDocs:
+  description: Find out more me
+  url: https://www.linkedin.com/in/xu-wen-0741411b0/
+servers:
+- url: https://wowardrobe-pro.onrender.com
+paths:
+  /register:
+    post:
+      tags:
+      - users
+      summary: Register a new user
+      description: "Register a new user. After registration, a new entry associated\
+        \ with the new user will be added to db."
+      operationId: userRegistering
+      requestBody:
+        description: Create a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User_registration'
+        required: true
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User_registration_res'
+        "422":
+          description: Unprocessable Entity
+      x-swagger-router-controller: Users
+  /login:
+    post:
+      tags:
+      - users
+      summary: Login a user
+      description: "If logging in successfully, an access token will be sent back\
+        \ to client."
+      operationId: userLogin
+      requestBody:
+        description: Create a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User_login'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User_login_res'
+        "401":
+          description: Invalid credentials
+        "422":
+          description: Unprocessable Entity
+      x-swagger-router-controller: Users
+  /user:
+    get:
+      tags:
+      - users
+      summary: Get all users in the database
+      description: This is a dev mode method. No access_token is required.
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User_all_res'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+        "405":
+          description: Validation exception
+      x-swagger-router-controller: Users
+  /user/{user_id}:
+    get:
+      tags:
+      - users
+      summary: Get a user by ID
+      operationId: userUser_idGET
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 066ce054ec62440296f495091934ce5a
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User_get_res'
+        "404":
+          description: User not found
+        "422":
+          description: Unprocessable Entity
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Users
+    delete:
+      tags:
+      - users
+      summary: Delete a user by ID
+      description: This is a dev mode method. No access_token is required. A user
+        cannot delete any user account.
+      operationId: userUser_idDELETE
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+        "404":
+          description: User not found
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Users
+  /wardrobesList:
+    get:
+      tags:
+      - wardrobes
+      summary: Get all wardrobes in the database
+      description: This is a dev mode method. No access_token is required.
+      operationId: getAllWardrobes
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wardrobe_all_res'
+      x-swagger-router-controller: Wardrobes
+    post:
+      tags:
+      - wardrobes
+      summary: Create a new wardrobe
+      operationId: createNewWardrobe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wardrobe_req'
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wardrobe_create_res'
+        "422":
+          description: Unprocessable Entity
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Wardrobes
+  /wardrobe/{wardrobe_id}:
+    get:
+      tags:
+      - wardrobes
+      summary: Get a wardrobe by wardrobe_id
+      operationId: getWardrobe
+      parameters:
+      - name: wardrobe_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 8476bb52b5f4488ba9a34bebf55bb9e7
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wardrobe_get_res'
+        "404":
+          description: Wardrobe not found
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Wardrobes
+    put:
+      tags:
+      - wardrobes
+      summary: Update a wardrobe by wardrobe_id
+      operationId: wardrobeWardrobe_idPUT
+      parameters:
+      - name: wardrobe_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 8476bb52b5f4488ba9a34bebf55bb9e7
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wardrobe_update_req'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wardrobe_update_res'
+        "404":
+          description: Wardrobe not found
+        "422":
+          description: Unprocessable Entity
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Wardrobes
+    delete:
+      tags:
+      - wardrobes
+      summary: Delete a wardrobe by wardrobe_id
+      description: This is a dev mode method. No access_token is required. A user
+        cannot delete any user account.
+      operationId: wardrobeWardrobe_idDELETE
+      parameters:
+      - name: wardrobe_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+        "404":
+          description: Wardrobe not found
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Wardrobes
+  /itemsList:
+    get:
+      tags:
+      - items
+      summary: Get all items in the database
+      description: This is a dev mode method. No access_token is required.
+      operationId: getAllItems
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item_all_res'
+      x-swagger-router-controller: Items
+    post:
+      tags:
+      - items
+      summary: Create a new wardrobe
+      operationId: createNewItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item_req'
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item_create_res'
+        "422":
+          description: Unprocessable Entity
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Items
+  /item/{item_id}:
+    get:
+      tags:
+      - items
+      summary: Get an item by item_id
+      operationId: getItem
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 7dca7e31945a463fb3a5fdc5c7869f71
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item_res'
+        "404":
+          description: Item not found
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Items
+    put:
+      tags:
+      - items
+      summary: Update an item by item_id
+      operationId: updateItem
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 7dca7e31945a463fb3a5fdc5c7869f71
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item_update_req'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item_update_res'
+        "404":
+          description: Item not found
+        "422":
+          description: Unprocessable Entity
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Items
+    delete:
+      tags:
+      - items
+      summary: Delete an item by item_id
+      operationId: itemItem_idDELETE
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+        "404":
+          description: Item not found
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Items
+  /imagesList:
+    get:
+      tags:
+      - images
+      summary: Get all images in the database
+      description: This is a dev mode method. No access_token is required.
+      operationId: getAllImages
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Images_res'
+      x-swagger-router-controller: Images
+    post:
+      tags:
+      - images
+      summary: Upload images
+      operationId: uploadImages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Images_req'
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Images_upload_res'
+        "422":
+          description: Unprocessable Entity
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Images
+  /image/{item_id}:
+    get:
+      tags:
+      - images
+      summary: Get an image by image_id
+      operationId: getImage
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 7f78c19a17894d3ea7b9aac20cf14211
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image_req'
+        "404":
+          description: Image not found
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Images
+    delete:
+      tags:
+      - images
+      summary: Delete an image by image_id
+      operationId: deleteImage
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+        "404":
+          description: Image not found
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Images
+components:
+  schemas:
+    USER:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: 066ce054ec62440296f495091934ce5a
+        user_name:
+          type: string
+          example: Joe Doe
+        user_email:
+          type: string
+          example: testerJoe@gmail.com
+    WARDROBE:
+      type: object
+      properties:
+        wardrobe_name:
+          type: string
+          example: Yellow Wardrobe
+        wardrobe_description:
+          type: string
+          example: quite a small and delicate one
+        wardrobe_image:
+          type: string
+          example: http://url_yellow_wardrobe
+        wardrobe_id:
+          type: string
+          example: 8476bb52b5f4488ba9a34bebf55bb9e7
+    ITEM:
+      type: object
+      properties:
+        item_color:
+          type: string
+          example: black
+        item_category:
+          type: string
+          example: hat
+        item_suitability:
+          type: string
+          example: baskball games
+        item_price:
+          type: number
+          format: double
+          example: 19.99
+        item_time:
+          type: string
+          format: data
+          example: 2023-05-23
+        item_season:
+          type: string
+          example: summer
+          enum:
+          - spring
+          - summer
+          - fall
+          - winter
+        item_id:
+          type: string
+          example: 7dca7e31945a463fb3a5fdc5c7869f71
+    IMAGE:
+      type: object
+      properties:
+        image_id:
+          type: string
+          example: 7f78c19a17894d3ea7b9aac20cf14211
+        image_url:
+          type: string
+          example: https://url_7
+    The_following_schemas_are_only_used_for_filling_up_the_examples_but_not_in_database:
+      type: object
+      properties:
+        description:
+          type: string
+          example: "null"
+    User_registration:
+      required:
+      - user_email
+      - user_name
+      - user_password
+      type: object
+      properties:
+        user_name:
+          type: string
+          example: Joe Doe
+        user_email:
+          type: string
+          example: testerJoe@gmail.com
+        user_password:
+          type: string
+          example: "12345678"
+    User_registration_res:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: 066ce054ec62440296f495091934ce5a
+        user_name:
+          type: string
+          example: Joe Doe
+        user_email:
+          type: string
+          example: testerJoe@gmail.com
+        wardrobes:
+          type: array
+          example: []
+          items:
+            type: string
+      example:
+        wardrobes: []
+        user_email: testerJoe@gmail.com
+        user_id: 066ce054ec62440296f495091934ce5a
+        user_name: Joe Doe
+    User_get_res:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: 066ce054ec62440296f495091934ce5a
+        user_name:
+          type: string
+          example: Joe Doe
+        user_email:
+          type: string
+          example: testerJoe@gmail.com
+        wardrobes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Wardrobe'
+      example:
+        wardrobes:
+        - wardrobe_description: quite a small and delicate one
+          wardrobe_image: http://url_yellow_wardrobe
+          wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+          wardrobe_name: Yellow Wardrobe
+        - wardrobe_description: quite a small and delicate one
+          wardrobe_image: http://url_yellow_wardrobe
+          wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+          wardrobe_name: Yellow Wardrobe
+        user_email: testerJoe@gmail.com
+        user_id: 066ce054ec62440296f495091934ce5a
+        user_name: Joe Doe
+    User_login:
+      required:
+      - user_email
+      - user_password
+      properties:
+        user_email:
+          type: string
+          example: testerJoe@gmail.com
+        user_password:
+          type: string
+          example: "12345678"
+    User_login_res:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NDc4OTQ3NCwianRpIjoiZmYzMzJjZGMtMTM4OS00MTJlLTllMDctMGM4ZmFmMjY1ZWI3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjA2NmNlMDU0ZWM2MjQ0MDI5NmY0OTUwOTE5MzRjZTVhIiwibmJmIjoxNjg0Nzg5NDc0LCJleHAiOjE2ODQ3OTAzNzR9.CUHfOW5N6-fU1VOpzce8qYYCCmLnYutqng2NTWyu6wY
+      example:
+        access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NDc4OTQ3NCwianRpIjoiZmYzMzJjZGMtMTM4OS00MTJlLTllMDctMGM4ZmFmMjY1ZWI3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjA2NmNlMDU0ZWM2MjQ0MDI5NmY0OTUwOTE5MzRjZTVhIiwibmJmIjoxNjg0Nzg5NDc0LCJleHAiOjE2ODQ3OTAzNzR9.CUHfOW5N6-fU1VOpzce8qYYCCmLnYutqng2NTWyu6wY
+    User_all_res:
+      type: array
+      items:
+        $ref: '#/components/schemas/User_registration_res'
+    User:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: 066ce054ec62440296f495091934ce5a
+        user_name:
+          type: string
+          example: Joe Doe
+        user_email:
+          type: string
+          example: testerJoe@gmail.com
+      example:
+        user_email: testerJoe@gmail.com
+        user_id: 066ce054ec62440296f495091934ce5a
+        user_name: Joe Doe
+    Wardrobe_req:
+      required:
+      - user_id
+      - wardrobe_description
+      - wardrobe_image
+      - wardrobe_name
+      type: object
+      properties:
+        wardrobe_name:
+          type: string
+          example: Yellow Wardrobe
+        wardrobe_description:
+          type: string
+          example: quite a small and delicate one
+        wardrobe_image:
+          type: string
+          example: http://url_yellow_wardrobe
+    Wardrobe_update_req:
+      required:
+      - user_id
+      - wardrobe_description
+      - wardrobe_image
+      - wardrobe_name
+      type: object
+      properties:
+        wardrobe_name:
+          type: string
+          example: Yellow Wardrobe
+        wardrobe_description:
+          type: string
+          example: ' a medium-sized and delicate one'
+        wardrobe_image:
+          type: string
+          example: http://url_yellow_wardrobe
+    Wardrobe_update_res:
+      type: object
+      properties:
+        wardrobe_name:
+          type: string
+          example: Yellow Wardrobe
+        wardrobe_description:
+          type: string
+          example: ' a medium-sized and delicate one'
+        wardrobe_image:
+          type: string
+          example: http://url_yellow_wardrobe
+        wardrobe_id:
+          type: string
+          example: 8476bb52b5f4488ba9a34bebf55bb9e7
+        user:
+          $ref: '#/components/schemas/User'
+        items:
+          type: array
+          example: []
+          items:
+            type: string
+      example:
+        wardrobe_description: ' a medium-sized and delicate one'
+        wardrobe_image: http://url_yellow_wardrobe
+        wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+        wardrobe_name: Yellow Wardrobe
+        user:
+          user_email: testerJoe@gmail.com
+          user_id: 066ce054ec62440296f495091934ce5a
+          user_name: Joe Doe
+        items: []
+    Wardrobe_all_res:
+      type: array
+      items:
+        $ref: '#/components/schemas/Wardrobe_get_res'
+    Wardrobe_get_res:
+      type: object
+      properties:
+        wardrobe_name:
+          type: string
+          example: Yellow Wardrobe
+        wardrobe_description:
+          type: string
+          example: quite a small and delicate one
+        wardrobe_image:
+          type: string
+          example: http://url_yellow_wardrobe
+        wardrobe_id:
+          type: string
+          example: 8476bb52b5f4488ba9a34bebf55bb9e7
+        user:
+          $ref: '#/components/schemas/User'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+      example:
+        wardrobe_description: quite a small and delicate one
+        wardrobe_image: http://url_yellow_wardrobe
+        wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+        wardrobe_name: Yellow Wardrobe
+        user:
+          user_email: testerJoe@gmail.com
+          user_id: 066ce054ec62440296f495091934ce5a
+          user_name: Joe Doe
+        items:
+        - item_season: summer
+          item_color: black
+          item_id: 7dca7e31945a463fb3a5fdc5c7869f71
+          item_price: 19.99
+          item_time: 2023-05-23
+          item_category: hat
+          item_suitability: baskball games
+        - item_season: summer
+          item_color: black
+          item_id: 7dca7e31945a463fb3a5fdc5c7869f71
+          item_price: 19.99
+          item_time: 2023-05-23
+          item_category: hat
+          item_suitability: baskball games
+    Wardrobe_create_res:
+      type: object
+      properties:
+        wardrobe_name:
+          type: string
+          example: Yellow Wardrobe
+        wardrobe_description:
+          type: string
+          example: quite a small and delicate one
+        wardrobe_image:
+          type: string
+          example: http://url_yellow_wardrobe
+        wardrobe_id:
+          type: string
+          example: 8476bb52b5f4488ba9a34bebf55bb9e7
+        user:
+          $ref: '#/components/schemas/User'
+        items:
+          type: array
+          example: []
+          items:
+            type: string
+      example:
+        wardrobe_description: quite a small and delicate one
+        wardrobe_image: http://url_yellow_wardrobe
+        wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+        wardrobe_name: Yellow Wardrobe
+        user:
+          user_email: testerJoe@gmail.com
+          user_id: 066ce054ec62440296f495091934ce5a
+          user_name: Joe Doe
+        items: []
+    Wardrobe:
+      type: object
+      properties:
+        wardrobe_name:
+          type: string
+          example: Yellow Wardrobe
+        wardrobe_description:
+          type: string
+          example: quite a small and delicate one
+        wardrobe_image:
+          type: string
+          example: http://url_yellow_wardrobe
+        wardrobe_id:
+          type: string
+          example: 8476bb52b5f4488ba9a34bebf55bb9e7
+      example:
+        wardrobe_description: quite a small and delicate one
+        wardrobe_image: http://url_yellow_wardrobe
+        wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+        wardrobe_name: Yellow Wardrobe
+    Item_all_res:
+      type: array
+      items:
+        $ref: '#/components/schemas/Item_get_res'
+    Item_get_res:
+      type: object
+      properties:
+        item_color:
+          type: string
+          example: black
+        item_category:
+          type: string
+          example: hat
+        item_suitability:
+          type: string
+          example: baskball games
+        item_price:
+          type: number
+          format: double
+          example: 19.99
+        item_time:
+          type: string
+          format: data
+          example: 2023-05-23
+        item_season:
+          type: string
+          example: summer
+          enum:
+          - spring
+          - summer
+          - fall
+          - winter
+        wardrobe:
+          $ref: '#/components/schemas/Wardrobe'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+      example:
+        item_season: summer
+        images:
+        - image_url: https://url_7
+          image_id: 7f78c19a17894d3ea7b9aac20cf14211
+        - image_url: https://url_7
+          image_id: 7f78c19a17894d3ea7b9aac20cf14211
+        item_color: black
+        item_price: 19.99
+        item_time: 2023-05-23
+        wardrobe:
+          wardrobe_description: quite a small and delicate one
+          wardrobe_image: http://url_yellow_wardrobe
+          wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+          wardrobe_name: Yellow Wardrobe
+        item_category: hat
+        item_suitability: baskball games
+    Item_req:
+      required:
+      - item_category
+      - item_color
+      - item_price
+      - item_season
+      - item_suitability
+      - item_time
+      - wardrobe_id
+      type: object
+      properties:
+        item_color:
+          type: string
+          example: black
+        item_category:
+          type: string
+          example: hat
+        item_suitability:
+          type: string
+          example: baskball games
+        item_price:
+          type: number
+          format: double
+          example: 19.99
+        item_time:
+          type: string
+          format: data
+          example: 2023-05-23
+        item_season:
+          type: string
+          enum:
+          - spring
+          - summer
+          - fall
+          - winter
+        wardrobe_id:
+          type: string
+          example: 8476bb52b5f4488ba9a34bebf55bb9e7
+    Item_update_req:
+      required:
+      - item_category
+      - item_color
+      - item_price
+      - item_season
+      - item_suitability
+      - item_time
+      - wardrobe_id
+      type: object
+      properties:
+        item_color:
+          type: string
+          example: black
+        item_category:
+          type: string
+          example: hat
+        item_suitability:
+          type: string
+          example: baskball games
+        item_price:
+          type: number
+          format: double
+          example: 29.99
+        item_time:
+          type: string
+          format: data
+          example: 2023-05-25
+        item_season:
+          type: string
+          enum:
+          - spring
+          - summer
+          - fall
+          - winter
+        wardrobe_id:
+          type: string
+          example: 8476bb52b5f4488ba9a34bebf55bb9e7
+    Item_res:
+      type: object
+      properties:
+        item_color:
+          type: string
+          example: black
+        item_category:
+          type: string
+          example: hat
+        item_suitability:
+          type: string
+          example: baskball games
+        item_price:
+          type: number
+          format: double
+          example: 19.99
+        item_time:
+          type: string
+          format: data
+          example: 2023-05-23
+        item_season:
+          type: string
+          enum:
+          - spring
+          - summer
+          - fall
+          - winter
+        wardrobe:
+          $ref: '#/components/schemas/Wardrobe'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+      example:
+        item_season: spring
+        images:
+        - image_url: https://url_7
+          image_id: 7f78c19a17894d3ea7b9aac20cf14211
+        - image_url: https://url_7
+          image_id: 7f78c19a17894d3ea7b9aac20cf14211
+        item_color: black
+        item_price: 19.99
+        item_time: 2023-05-23
+        wardrobe:
+          wardrobe_description: quite a small and delicate one
+          wardrobe_image: http://url_yellow_wardrobe
+          wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+          wardrobe_name: Yellow Wardrobe
+        item_category: hat
+        item_suitability: baskball games
+    Item_create_res:
+      type: object
+      properties:
+        item_color:
+          type: string
+          example: black
+        item_category:
+          type: string
+          example: hat
+        item_suitability:
+          type: string
+          example: baskball games
+        item_price:
+          type: number
+          format: double
+          example: 19.99
+        item_time:
+          type: string
+          format: data
+          example: 2023-05-23
+        item_season:
+          type: string
+          enum:
+          - spring
+          - summer
+          - fall
+          - winter
+        wardrobe:
+          $ref: '#/components/schemas/Wardrobe'
+        images:
+          type: string
+          example: "[]"
+      example:
+        item_season: spring
+        images: "[]"
+        item_color: black
+        item_price: 19.99
+        item_time: 2023-05-23
+        wardrobe:
+          wardrobe_description: quite a small and delicate one
+          wardrobe_image: http://url_yellow_wardrobe
+          wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+          wardrobe_name: Yellow Wardrobe
+        item_category: hat
+        item_suitability: baskball games
+    Item_update_res:
+      type: object
+      properties:
+        item_color:
+          type: string
+          example: black
+        item_category:
+          type: string
+          example: hat
+        item_suitability:
+          type: string
+          example: baskball games
+        item_price:
+          type: number
+          format: double
+          example: 29.99
+        item_time:
+          type: string
+          format: data
+          example: 2023-05-25
+        item_season:
+          type: string
+          enum:
+          - spring
+          - summer
+          - fall
+          - winter
+        wardrobe:
+          $ref: '#/components/schemas/Wardrobe'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+      example:
+        item_season: spring
+        images:
+        - image_url: https://url_7
+          image_id: 7f78c19a17894d3ea7b9aac20cf14211
+        - image_url: https://url_7
+          image_id: 7f78c19a17894d3ea7b9aac20cf14211
+        item_color: black
+        item_price: 29.99
+        item_time: 2023-05-25
+        wardrobe:
+          wardrobe_description: quite a small and delicate one
+          wardrobe_image: http://url_yellow_wardrobe
+          wardrobe_id: 8476bb52b5f4488ba9a34bebf55bb9e7
+          wardrobe_name: Yellow Wardrobe
+        item_category: hat
+        item_suitability: baskball games
+    Item:
+      type: object
+      properties:
+        item_color:
+          type: string
+          example: black
+        item_category:
+          type: string
+          example: hat
+        item_suitability:
+          type: string
+          example: baskball games
+        item_price:
+          type: number
+          format: double
+          example: 19.99
+        item_time:
+          type: string
+          format: data
+          example: 2023-05-23
+        item_season:
+          type: string
+          example: summer
+          enum:
+          - spring
+          - summer
+          - fall
+          - winter
+        item_id:
+          type: string
+          example: 7dca7e31945a463fb3a5fdc5c7869f71
+      example:
+        item_season: summer
+        item_color: black
+        item_id: 7dca7e31945a463fb3a5fdc5c7869f71
+        item_price: 19.99
+        item_time: 2023-05-23
+        item_category: hat
+        item_suitability: baskball games
+    Images_req:
+      type: array
+      items:
+        $ref: '#/components/schemas/Image_req'
+    Image_req:
+      required:
+      - item_id
+      - url
+      type: object
+      properties:
+        item_id:
+          type: string
+          example: 7dca7e31945a463fb3a5fdc5c7869f71
+        url:
+          type: string
+          example: https://url_7
+      example:
+        item_id: 7dca7e31945a463fb3a5fdc5c7869f71
+        url: https://url_7
+    Images_res:
+      type: array
+      items:
+        $ref: '#/components/schemas/Image_res'
+    Image_res:
+      type: object
+      properties:
+        image_id:
+          type: string
+          example: 24c9536306f74297a23a9f5afc19fcac
+        image_url:
+          type: string
+          example: https://url_7
+        item:
+          $ref: '#/components/schemas/Item'
+      example:
+        item:
+          item_season: summer
+          item_color: black
+          item_id: 7dca7e31945a463fb3a5fdc5c7869f71
+          item_price: 19.99
+          item_time: 2023-05-23
+          item_category: hat
+          item_suitability: baskball games
+        image_url: https://url_7
+        image_id: 24c9536306f74297a23a9f5afc19fcac
+    Images_upload_res:
+      type: array
+      items:
+        $ref: '#/components/schemas/Image'
+    Image:
+      type: object
+      properties:
+        image_id:
+          type: string
+          example: 7f78c19a17894d3ea7b9aac20cf14211
+        image_url:
+          type: string
+          example: https://url_7
+      example:
+        image_url: https://url_7
+        image_id: 7f78c19a17894d3ea7b9aac20cf14211
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

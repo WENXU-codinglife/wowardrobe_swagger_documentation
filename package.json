@@ -1,0 +1,20 @@
+{
+  "name": "wowardrobe-rest-api",
+  "version": "0.0.1",
+  "description": "*[Note: WardrobePro is a personal project developed using Python3, python-flask, postgreSQL, Python-SQLAlchemy, Python-Smorest, Python-Marshmallow, and Python-JWT.]*  Are you tired of rummaging through your closet, unsure of what to wear each day? Look no further! WardrobePro is here to revolutionize the way you manage your fashion collection.  WardrobePro is a powerful and user-friendly API server that serves as your very own virtual clothes library. With its sleek interface and cutting-edge features, it allows you to effortlessly organize, track, and plan your outfits with ease.  - [The WoWardrobe repository](https://github.com/WENXU-codinglife/wowardrobe_PROJ)",
+  "main": "index.js",
+  "scripts": {
+	"prestart": "npm install",
+	"start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "oas3-tools": "^2.2.3"
+  }
+}
