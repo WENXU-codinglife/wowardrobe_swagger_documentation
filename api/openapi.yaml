@@ -513,7 +513,7 @@ components:
           example: 19.99
         item_time:
           type: string
-          format: data
+          format: date
           example: 2023-05-23
         item_season:
           type: string
@@ -836,7 +836,7 @@ components:
           example: 19.99
         item_time:
           type: string
-          format: data
+          format: date
           example: 2023-05-23
         item_season:
           type: string
@@ -895,7 +895,7 @@ components:
           example: 19.99
         item_time:
           type: string
-          format: data
+          format: date
           example: 2023-05-23
         item_season:
           type: string
@@ -933,7 +933,7 @@ components:
           example: 29.99
         item_time:
           type: string
-          format: data
+          format: date
           example: 2023-05-25
         item_season:
           type: string
@@ -963,7 +963,7 @@ components:
           example: 19.99
         item_time:
           type: string
-          format: data
+          format: date
           example: 2023-05-23
         item_season:
           type: string
@@ -1013,7 +1013,7 @@ components:
           example: 19.99
         item_time:
           type: string
-          format: data
+          format: date
           example: 2023-05-23
         item_season:
           type: string
@@ -1058,7 +1058,7 @@ components:
           example: 29.99
         item_time:
           type: string
-          format: data
+          format: date
           example: 2023-05-25
         item_season:
           type: string
@@ -1108,7 +1108,7 @@ components:
           example: 19.99
         item_time:
           type: string
-          format: data
+          format: date
           example: 2023-05-23
         item_season:
           type: string
